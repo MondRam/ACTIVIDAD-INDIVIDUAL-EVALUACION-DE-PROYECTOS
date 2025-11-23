@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proyecto Base</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Generador de Reportes</h1>
+        <p>Haz clic en el botón para generar un reporte.</p>
+        <button id="generateBtn">Generar Reporte</button>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        
+        document.getElementById("generateBtn").addEventListener("click", function() {
+            const output = document.getElementById("output");
+            output.innerHTML = "Reporte generado: Datos de ejemplo.";
+        });
+    </script>
+</body>
+</html>
