@@ -1,59 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Proyecto Base</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .container { max-width: 600px; margin: auto; }
-        button { padding: 10px 15px; margin-top: 10px; cursor: pointer; }
-        #output { margin-top: 20px; padding: 10px; border: 1px solid #ccc; min-height: 50px; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Reportes con Strategy, SOLID y DI</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .container { max-width: 700px; margin: auto; }
+    button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+    #output { margin-top: 20px; padding: 10px; border: 1px solid #ccc; min-height: 60px; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Generador de Reportes</h1>
-        <button id="generateBtn">Generar Reporte</button>
-        <div id="output"></div>
+  <div class="container">
+    <h1>Generador de Reportes</h1>
+    <div>
+      <button id="textBtn">Generar Texto</button>
+      <button id="pdfBtn">Generar PDF</button>
+      <button id="excelBtn">Generar Excel</button>
     </div>
+    <div id="output"></div>
+  </div>
 
-    <script>
-        class Report {
-            constructor(title, content) {
-            this.title = title;
-            this.content = content;
-            }
-        }
+  <script>
+    class Report {
+      constructor(title, content) {
+        this.title = title;
+        this.content = content;
+      }
+    }
 
-        class IExporter {
-            export(report) {
-            throw new Error("Método export() debe implementarse");
-            }
-        }
+    
+    class IExporter {
+      export(report) {
+        throw new Error("Método export() debe implementarse");
+      }
+    }
 
-        class TextExporter extends IExporter {
-            export(report) {
-            return `${report.title}: ${report.content}`;
-            }
-        }
+    
+    class TextExporter extends IExporter {
+      export(report) {
+        return `${report.title}: ${report.content}`;
+      }
+    }
+    class PDFExporter extends IExporter {
+      export(report) {
+        return `${report.title} (PDF): ${report.content}`;
+      }
+    }
+    class ExcelExporter extends IExporter {
+      export(report) {
+        return `${report.title} (Excel): ${report.content}`;
+      }
+    }
 
-        class PDFExporter extends IExporter {
-            export(report) {
-            return `${report.title} (PDF): ${report.content}`;
-            }
-        }
+    
+    class ReportGenerator {
+      constructor(exporter) {
+        this.exporter = exporter;
+      }
+      generate(report) {
+        return this.exporter.export(report);
+      }
+    }
 
-        class ExcelExporter extends IExporter {
-            export(report) {
-            return `${report.title} (Excel): ${report.content}`;
-            }
-        }
+    
+    const output = document.getElementById("output");
+    const sample = new Report("Reporte generado", "Datos de ejemplo");
 
-        document.getElementById("generateBtn").addEventListener("click", () => {
-            const report = new Report("Reporte generado", "Datos de ejemplo");
-            const exporter = new TextExporter(); 
-            document.getElementById("output").innerHTML = exporter.export(report);
-        });
-    </script>
+    document.getElementById("textBtn").addEventListener("click", () => {
+      const generator = new ReportGenerator(new TextExporter());
+      output.innerHTML = generator.generate(sample);
+    });
+
+    document.getElementById("pdfBtn").addEventListener("click", () => {
+      const generator = new ReportGenerator(new PDFExporter());
+      output.innerHTML = generator.generate(sample);
+    });
+
+    document.getElementById("excelBtn").addEventListener("click", () => {
+      const generator = new ReportGenerator(new ExcelExporter());
+      output.innerHTML = generator.generate(sample);
+    });
+  </script>
 </body>
 </html>
