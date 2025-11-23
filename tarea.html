@@ -18,23 +18,41 @@
     </div>
 
     <script>
-       
         class Report {
             constructor(title, content) {
-                this.title = title;
-                this.content = content;
-            }
-
-            getFormatted() {
-                return `${this.title}: ${this.content}`;
+            this.title = title;
+            this.content = content;
             }
         }
 
-       
-        document.getElementById("generateBtn").addEventListener("click", function() {
+        class IExporter {
+            export(report) {
+            throw new Error("Método export() debe implementarse");
+            }
+        }
+
+        class TextExporter extends IExporter {
+            export(report) {
+            return `${report.title}: ${report.content}`;
+            }
+        }
+
+        class PDFExporter extends IExporter {
+            export(report) {
+            return `${report.title} (PDF): ${report.content}`;
+            }
+        }
+
+        class ExcelExporter extends IExporter {
+            export(report) {
+            return `${report.title} (Excel): ${report.content}`;
+            }
+        }
+
+        document.getElementById("generateBtn").addEventListener("click", () => {
             const report = new Report("Reporte generado", "Datos de ejemplo");
-            const output = document.getElementById("output");
-            output.innerHTML = report.getFormatted();
+            const exporter = new TextExporter(); 
+            document.getElementById("output").innerHTML = exporter.export(report);
         });
     </script>
 </body>
