@@ -4,40 +4,37 @@
     <meta charset="UTF-8">
     <title>Proyecto Base</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-        }
-        button {
-            padding: 10px 15px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-        #output {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            min-height: 50px;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 600px; margin: auto; }
+        button { padding: 10px 15px; margin-top: 10px; cursor: pointer; }
+        #output { margin-top: 20px; padding: 10px; border: 1px solid #ccc; min-height: 50px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Generador de Reportes</h1>
-        <p>Haz clic en el botón para generar un reporte.</p>
         <button id="generateBtn">Generar Reporte</button>
         <div id="output"></div>
     </div>
 
     <script>
-        
+       
+        class Report {
+            constructor(title, content) {
+                this.title = title;
+                this.content = content;
+            }
+
+            getFormatted() {
+                return `${this.title}: ${this.content}`;
+            }
+        }
+
+       
         document.getElementById("generateBtn").addEventListener("click", function() {
+            const report = new Report("Reporte generado", "Datos de ejemplo");
             const output = document.getElementById("output");
-            output.innerHTML = "Reporte generado: Datos de ejemplo.";
+            output.innerHTML = report.getFormatted();
         });
     </script>
 </body>
